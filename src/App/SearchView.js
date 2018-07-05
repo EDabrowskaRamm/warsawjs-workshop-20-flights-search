@@ -1,16 +1,26 @@
 import React from 'react'
-import '../styles/searchView.css'
+import Select from '../Components/Select'
 
 export default class SearchView extends React.Component {
-  state = {
-    from: 'Waw',
-    to: 'JFK',
-    departDate: '2018-05-20',
-    returnDate: '2018-05-30'
+  constructor(props) {
+    super(props)
+    this.state = {
+      from: props.airports[0] ? props.airports[0].code : '',
+      to: props.airports[0] ? props.airports[0].code : '',
+      departDate: '2018-05-20',
+      returnDate: '2018-05-30'
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      from: nextProps.airports[0] ? nextProps.airports[0].code : '',
+      to: nextProps.airports[0] ? nextProps.airports[0].code : '',
+    })
   }
 
   handleInputChange = name => e => {
-    console.log(e.target.value)
+    console.log('ddd', e.target.value)
     this.setState({
       [name]: e.target.value
     })
@@ -23,17 +33,13 @@ export default class SearchView extends React.Component {
   }
 
   render () {
-    const {from, to, departDate, returnDate} = this.state
+    const {departDate, returnDate} = this.state
 
     return <form onSubmit={this.handleFormSubmit}>
       <div className='form-group'>
         <label htmlFor='flyFrom'>From:
-          <select id='from'
-            value={from}
-            onChange={this.handleInputChange('from')}>
-            <option>Waw</option>
-            <option>JFK</option>
-          </select>
+          <Select value={this.props.airports}
+            onChange={this.handleInputChange('from')} />
         </label>
         <label htmlFor='dateFrom'>Date:
           <input type="date" value={departDate} onChange={this.handleInputChange('departDate')} />
@@ -42,12 +48,8 @@ export default class SearchView extends React.Component {
 
       <div className='form-group'>
         <label htmlFor='flyTo'>To:
-          <select id='to'
-            value={to}
-            onChange={this.handleInputChange('to')}>
-            <option>Waw</option>
-            <option>JFK</option>
-          </select>
+          <Select value={this.props.airports}
+            onChange={this.handleInputChange('to')} />
         </label>
         <label htmlFor='dateTo'>Date:
           <input type='date' value={returnDate} onChange={this.handleInputChange('returnDate')} />

@@ -10,7 +10,17 @@ class App extends React.Component {
       from: null,
       departDate: null,
       returnDate: null
-    }
+    },
+    airports: []
+  }
+
+  async componentDidMount () {
+    const url = `https://warsawjs-flights-api.herokuapp.com/airports/`
+    const result = await fetch(url)
+    const airports = await result.json()
+    
+    this.setState({airports})
+    console.log(airports)
   }
 
   onSearch = (searchData) => {
@@ -24,7 +34,7 @@ class App extends React.Component {
     const {view, searchData} = this.state
     switch (view) {
       case 'search':
-        return <SearchView onSearch={this.onSearch} />
+        return <SearchView onSearch={this.onSearch} airports={this.state.airports} />
       case 'flights':
         return <FlightsView searchData = {searchData} />
       default:

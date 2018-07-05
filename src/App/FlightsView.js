@@ -13,6 +13,7 @@ export default class returnDate extends React.Component {
     const flights = await result.json()
     
     this.setState({flights})
+    console.log(flights)
   }
 
   render () {
